@@ -30,9 +30,11 @@ public class SubwayService {
         return subwayArrivalDTOSubwayParser.getData(startPageNumber,endPageNumber,regionName);
     }
 
+    //---------------아래의 코드는 자동화 예정 코드 -----/////////
+
     // 테스트 코드 ( 추후에 자동화 예정 ) 
-    public List<ResponseSubwayLineDTO> getSubwayStationName(String startPageNumber, String endPageNumber, String regionName) throws IOException {
-        return subwayLineParser.getData(startPageNumber,endPageNumber,regionName);
+    public List<ResponseSubwayLineDTO> getSubwayStationName() throws IOException {
+        return subwayLineParser.getData();
     }
 
 }
