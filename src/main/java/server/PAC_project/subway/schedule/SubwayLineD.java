@@ -34,7 +34,7 @@ public class SubwayLineD implements SubwayParser<ResponseSubwayLineDTO> {
 
     public List<ResponseSubwayLineDTO> getData(String startPageNumber, String endPageNumber, String subwayName) throws IOException {
         List<ResponseSubwayLineDTO> parser = parser(startPageNumber, endPageNumber, subwayName);
-        subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser, subwayName));
+        subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
         return parser(startPageNumber, endPageNumber, subwayName);
     }
 
