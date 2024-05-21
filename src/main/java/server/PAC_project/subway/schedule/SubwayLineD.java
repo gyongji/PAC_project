@@ -1,6 +1,8 @@
-package server.PAC_project.subway.parser;
+package server.PAC_project.subway.schedule;
 
+import server.PAC_project.config.SubwayRoute;
 import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
+import server.PAC_project.subway.parser.SubwayParser;
 import server.PAC_project.subway.repository.SubwayRepository;
 import server.PAC_project.util.SubwayMapperUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,13 +31,19 @@ public class SubwayLineD implements SubwayParser<ResponseSubwayLineDTO> {
     @Value("${open.url.subway-station-name-endpoint}")
     private String getSubwayStationNameEndpoint;
 
+    private static final String endPageNumber = "500";
+    private static final String startPageNumber = "0";
+
     private final RestTemplate restTemplate;
     private final SubwayRepository subwayRepository;
 
-    public List<ResponseSubwayLineDTO> getData(String startPageNumber, String endPageNumber, String subwayName) throws IOException {
-        List<ResponseSubwayLineDTO> parser = parser(startPageNumber, endPageNumber, subwayName);
+    public List<ResponseSubwayLineDTO> getData() throws IOException {
+        List<ResponseSubwayLineDTO> parser = new ArrayList<>();
+        for (SubwayRoute subwayName : SubwayRoute.values()) {
+            parser.addAll(parser(startPageNumber, endPageNumber, subwayName.getLineName()));
+        }
         subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
-        return parser(startPageNumber, endPageNumber, subwayName);
+        return parser;
     }
 
     private List<ResponseSubwayLineDTO> parser(String startPageNumber, String endPageNumber, String subwayName) throws JsonProcessingException {
@@ -44,7 +52,7 @@ public class SubwayLineD implements SubwayParser<ResponseSubwayLineDTO> {
                 + getSubwayStationNameKey
                 +getSubwayStationNameEndpoint
                 +"/"+startPageNumber+"/"+endPageNumber+"/%20/%20/"+subwayName;
-
+        System.out.println(STATION_COORDINATES_URL);
         String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
         JsonNode jsonNode1 = objectMapper.readTree(dataList);
         jsonNode1 = jsonNode1.get("SearchSTNBySubwayLineInfo");
