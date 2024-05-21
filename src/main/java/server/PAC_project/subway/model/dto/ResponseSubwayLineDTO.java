@@ -1,7 +1,6 @@
 package server.PAC_project.subway.model.dto;
 
-import server.PAC_project.subway.model.entity.LineFive;
-import server.PAC_project.subway.model.entity.LineTwo;
+import server.PAC_project.subway.model.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -27,37 +26,7 @@ public class ResponseSubwayLineDTO {
 
     private String inoutCode;
 
-
-    public LineFive LineFiveToEntity() {
-        System.out.println("5 Line Success");
-        return LineFive.builder()
-                .stationLine(this.stationLine)
-                .stationName(this.stationName)
-                .inoutCode(this.inoutCode)
-                .stationCode(this.stationCode)
-                .build();
-
+    public Line toEntity() {
+        return Line.toEn(this);
     }
-
-    public LineTwo LineTwoToEntity() {
-        System.out.println("5 Line Success");
-        return LineTwo.builder()
-                .stationLine(this.stationLine)
-                .stationName(this.stationName)
-                .inoutCode(this.inoutCode)
-                .stationCode(this.stationCode)
-                .build();
-
-    }
-
 }
-//        if (name.equals("5호선")) {
-//                System.out.println("5 Line Success");
-//                return new LineFive(this.typeCode, this.localCode, this.stationLine, this.stationName, this.stationCode, this.inoutCode);
-//                } else if (name.equals("2호선")) {
-//                System.out.println("2 Line Success");
-//                return new LineTwo(this.typeCode, this.localCode, this.stationLine, this.stationName, this.stationCode, this.inoutCode);
-//                }else{
-//                System.out.println("ERROR");
-//                return null;
-//                }
