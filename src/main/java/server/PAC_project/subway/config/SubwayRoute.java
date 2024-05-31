@@ -1,4 +1,4 @@
-package server.PAC_project.config;
+package server.PAC_project.subway.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,6 @@ public enum SubwayRoute {
     }
 
     public static String getSubwayLineCode(String subwayLineName) {
-        System.out.println(subwayLineName);
         SubwayRoute subwayRoute = null;
         for (SubwayRoute s : SubwayRoute.values()) {
             if (subwayLineName.contains(s.getLineName())) {
