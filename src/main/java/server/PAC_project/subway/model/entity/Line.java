@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import server.PAC_project.subway.config.SubwayRoute;
 import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
 
 @Entity
@@ -26,24 +27,29 @@ public class Line {
 
     private String stationLine;
 
+    private String stationLineCode;
+
     private String stationName;
 
     private String stationCode;
 
     private String inoutCode;
 
-    public Line(String typeCode, String localCode, String stationLine, String stationName, String stationCode, String inoutCode) {
+    public Line(String typeCode, String localCode, String stationLine, String stationLineCode ,String stationName, String stationCode, String inoutCode) {
         this.typeCode = typeCode;
         this.localCode = localCode;
         this.stationLine = stationLine;
+        this.stationLineCode = stationLineCode;
         this.stationName = stationName;
         this.stationCode = stationCode;
         this.inoutCode = inoutCode;
     }
 
     public static Line toEn(ResponseSubwayLineDTO responseSubwayLineDTO) {
+        String subwayLineCode = SubwayRoute.getSubwayLineCode(responseSubwayLineDTO.getStationLine());
         return Line.builder()
                 .stationLine(responseSubwayLineDTO.getStationLine())
+                .stationLineCode(subwayLineCode)
                 .inoutCode(responseSubwayLineDTO.getInoutCode())
                 .stationCode(responseSubwayLineDTO.getStationCode())
                 .stationName(responseSubwayLineDTO.getStationName())
@@ -51,5 +57,6 @@ public class Line {
                 .typeCode(responseSubwayLineDTO.getTypeCode())
                 .build();
     }
+
 
 }
