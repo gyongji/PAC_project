@@ -1,9 +1,9 @@
 package server.PAC_project.subway.model.dto;
 
-import server.PAC_project.subway.model.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import server.PAC_project.subway.model.entity.Line;
 
 @Data
 //@JsonProperty :: ObjectMapper에서 추출한 데이터의 변수 이름과 매칭
