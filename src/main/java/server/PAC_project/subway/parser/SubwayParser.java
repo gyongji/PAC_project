@@ -9,7 +9,7 @@ public interface SubwayParser<T> {
     default List<T> getData() throws IOException {
         return null;
     }
-    default List<T> getData(String A, String B, String C) throws IOException {
+    default List<T> getData(String A) throws IOException {
         return null;
     }
 
