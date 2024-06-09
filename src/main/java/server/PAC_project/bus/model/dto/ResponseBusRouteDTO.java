@@ -1,7 +1,8 @@
-package server.PAC_project.bus.model;
+package server.PAC_project.bus.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import server.PAC_project.bus.model.entity.BusEntity;
 
 @Data
 public class ResponseBusRouteDTO {
@@ -9,4 +10,8 @@ public class ResponseBusRouteDTO {
     private String ROUTE_NAME;
     @JsonProperty("ROUTE_ID")
     private String ROUTE_ID;
+
+    public BusEntity toEntity() {
+        return BusEntity.toEn(this);
+    }
 }
