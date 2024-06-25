@@ -1,24 +1,21 @@
 package server.PAC_project.bus.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import server.PAC_project.bus.schedule.SeoulBusRoute;
-
-import java.io.IOException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import server.PAC_project.bus.BusService;
+import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bus")
 public class BusController {
 
-    private final SeoulBusRoute busService;
+    private final BusService busService;
 
-    //서울특별시 한정 버스 노선 ID값 정보
-    @GetMapping("/route/information")
-    public void getBusRouteInformation() throws IOException {
-        busService.getData();
+    @GetMapping("/information")
+    public ResponseEntity<ResponseBusRouteDTO> requestBusSearch(@RequestParam("busRouteName") String busRouteName) {
+        return ResponseEntity.ok(busService.busRouteSearch(busRouteName));
     }
 
 }
