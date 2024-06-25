@@ -16,7 +16,6 @@ import java.util.Map;
 public class SubwayService {
 
     private final SubwayParser<SearchSubwayLineDTO> subwayArrivalDTOSubwayParser;
-    private final SubwayLineD subwayLineD;
 
 
     public List<SearchSubwayLineDTO> searchSubwayLine(String regionName) throws IOException {
