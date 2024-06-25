@@ -1,6 +1,5 @@
 package server.PAC_project.subway.schedule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,14 +43,15 @@ public class SubwayLineD {
 
     //@Scheduled(cron = "${schedule.cron}")
     //매 월 25일 23시(오후 11시)에 자동으로 실행
-    @Scheduled(cron = "0 0 23 25 * ?")
+    @Scheduled(cron = "0 0 02 25 * ?")
     public void autoSubwayInformationSave() throws IOException {
         List<ResponseSubwayLineDTO> parser = new ArrayList<>();
         for (SubwayRoute subwayName : SubwayRoute.values()) {
             parser.addAll(parser(subwayName.getLineName()));
         }
-
         subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
+
+
     }
 
     //Xecel Parsing
