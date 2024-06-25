@@ -1,14 +1,11 @@
 package server.PAC_project.bus.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
+import server.PAC_project.bus.model.dto.FinalBusDTO;
 
 
 @Entity
@@ -17,23 +14,26 @@ import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BusEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    private String ROUTE_ID;
+    @Column(name = "route_id")
+    private String ROUTEID;
 
-    private String ROUTE_NAME;
+    @Column(name = "route_name")
+    private String ROUTENAME;
 
-    public BusEntity(String ROUTE_ID, String ROUTE_NAME) {
-        this.ROUTE_ID = ROUTE_ID;
-        this.ROUTE_NAME = ROUTE_NAME;
-    }
+    @Column(name = "inout")
+    private String INOUT;
 
-    public static BusEntity toEn(ResponseBusRouteDTO responseBusRouteDTO) {
+    public static BusEntity toEn(FinalBusDTO finalBusDTO) {
         return BusEntity.builder()
-                .ROUTE_ID(responseBusRouteDTO.getROUTE_ID())
-                .ROUTE_NAME(responseBusRouteDTO.getROUTE_NAME())
+                .ROUTEID(finalBusDTO.getROUTEID())
+                .ROUTENAME(finalBusDTO.getROUTENAME())
+                .INOUT(finalBusDTO.getINOUT_CODE())
                 .build();
     }
+
 }
