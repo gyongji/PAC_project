@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
+import org.apache.xmlbeans.impl.common.Mutex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,10 @@ import server.PAC_project.subway.config.ResponseSubwayRealTimeArrival;
 import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import server.PAC_project.subway.repository.SubwayRepository;
 
+import javax.management.monitor.Monitor;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 @Service
 @RequiredArgsConstructor
@@ -77,4 +80,3 @@ public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> 
         return subwayRepository.searchSubwayLine(subwayStationName, subwayLineCode);
     }
 }
-
