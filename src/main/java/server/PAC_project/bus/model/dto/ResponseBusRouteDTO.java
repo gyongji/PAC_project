@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class ResponseBusRouteDTO {
     @JsonProperty("ROUTE")
-    private String route;
+    private String ROUTE;
     @JsonProperty("ROUTE_ID")
     private String ROUTE_ID;
 }

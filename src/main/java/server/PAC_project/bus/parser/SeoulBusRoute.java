@@ -59,4 +59,5 @@ public class SeoulBusRoute implements BusParser<ResponseBusRouteDTO> {
         System.out.println(jsonNode1);
         return objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
     }
+
 }
