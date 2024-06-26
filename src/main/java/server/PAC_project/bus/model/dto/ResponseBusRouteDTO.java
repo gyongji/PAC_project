@@ -1,12 +1,19 @@
 package server.PAC_project.bus.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 public class ResponseBusRouteDTO {
-    @JsonProperty("ROUTE")
-    private String route;
-    @JsonProperty("ROUTE_ID")
-    private String ROUTE_ID;
+
+
+    private String ROUTENAME;
+    private String INOUT_CODE;
+
+    @Builder
+    public ResponseBusRouteDTO(String ROUTENAME, String INOUT_CODE) {
+        this.ROUTENAME = ROUTENAME;
+        this.INOUT_CODE = INOUT_CODE;
+    }
+
 }

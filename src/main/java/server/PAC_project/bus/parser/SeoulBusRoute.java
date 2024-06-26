@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class SeoulBusRoute implements BusParser<ResponseBusRouteDTO> {
+public class SeoulBusRoute{
 
     //시작 페이지
     private final int START_NUMBER = 1;
@@ -37,7 +37,6 @@ public class SeoulBusRoute implements BusParser<ResponseBusRouteDTO> {
 
 
     //서울특별시 한정 버스 노선 ID값 조회 서비스
-    @Override
     public List<ResponseBusRouteDTO> getData() throws JsonProcessingException {
         return parser();
     }
@@ -59,4 +58,5 @@ public class SeoulBusRoute implements BusParser<ResponseBusRouteDTO> {
         System.out.println(jsonNode1);
         return objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
     }
+
 }
