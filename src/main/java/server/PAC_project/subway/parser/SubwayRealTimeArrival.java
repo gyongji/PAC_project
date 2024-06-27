@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
-import org.apache.xmlbeans.impl.common.Mutex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,22 +15,20 @@ import server.PAC_project.subway.config.ResponseSubwayRealTimeArrival;
 import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import server.PAC_project.subway.repository.SubwayRepository;
 
-import javax.management.monitor.Monitor;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 @Service
 @RequiredArgsConstructor
-public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> {
+public class SubwayRealTimeArrival{
     @Value("${open.api.key.subway-real-time-key}")
     private String subwayRealTimeLocationKey;
 
-    @Value("${open.url.subway-real-time-url}")
-    private String subwayRealTimeUrl;
+    @Value("${open.url.subway-arrival-endpoint}")
+    private String subwayRealTimeArrivalEndPoint;
 
     @Value("${open.url.subway-arrival-url}")
-    private String subwayRealTimeArrivalEndPoint;
+    private String subwayRealTimeUrl;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -40,8 +37,6 @@ public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> 
     private static final int END_PAGE_NUMBER = 10;
 
     private final SubwayRepository subwayRepository;
-
-    @Override
     public List<SearchSubwayLineDTO> getData(String subwayStationName) throws IOException {
         return parser(subwayStationName);
     }

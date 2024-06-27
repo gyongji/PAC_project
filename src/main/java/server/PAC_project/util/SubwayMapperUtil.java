@@ -1,11 +1,9 @@
 package server.PAC_project.util;
 
 import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
-import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
-import server.PAC_project.subway.model.entity.*;
+import server.PAC_project.subway.model.entity.Line;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SubwayMapperUtil {
