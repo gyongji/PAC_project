@@ -1,6 +1,5 @@
 package server.PAC_project.bus.parser;
 
-import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 
 import java.util.List;
 @Service
