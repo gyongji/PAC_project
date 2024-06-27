@@ -29,7 +29,6 @@ dependencies {
 	implementation 'org.jsoup:jsoup:1.17.2'
 
 	// xlsx parser library
-	implementation 'org.apache.poi:poi:5.2.2'
 	implementation 'org.apache.poi:poi-ooxml:5.2.2'
 
 	//swagger
