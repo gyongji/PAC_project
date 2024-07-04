@@ -65,9 +65,6 @@ public class SeoulBusRoute {
         // 파싱된 데이터를 BusEntity 객체로 매핑
         List<BusEntity> busEntities = BusMapto.mapBusToEtity(parser());
 
-        for (BusEntity busEntity : busEntities) {
-            System.out.println("ID :: " + busEntity.getId() + "|| NM :: " + busEntity.getROUTENAME() + "|| InOut :: " + busEntity.getINOUT());
-        }
         // 매핑된 BusEntity 객체를 데이터베이스에 저장
         busRepository.saveAll(busEntities);
     }
@@ -82,9 +79,6 @@ public class SeoulBusRoute {
         }
 
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-
-        // 엑셀 시트 이름 콘솔에 출력
-        System.out.println("Name :: " + workbook.getSheetName(1));
 
         // 엑셀 시트에서 버스 이름 가져오기
         XSSFSheet sheet = workbook.getSheetAt(1);
@@ -121,7 +115,6 @@ public class SeoulBusRoute {
                 + seoulBusRouteEndPoint
                 + START_NUMBER + "/"
                 + END_NUMBER + "/";
-        System.out.println(STATION_COORDINATES_URL);
 
         // URL에 요청 보내서 String.class(문자열) 형식으로 받아옴
         String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
