@@ -1,4 +1,4 @@
-package server.PAC_project.subway.parser;
+package server.PAC_project.subway;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubwayRealTimeArrival{
+public class SubwayRealTimeArrivalService {
     @Value("${open.api.key.subway-real-time-key}")
     private String subwayRealTimeLocationKey;
 

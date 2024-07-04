@@ -1,24 +1,21 @@
 package server.PAC_project.subway.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.PAC_project.subway.config.SubwayRoute;
+import server.PAC_project.subway.model.dto.AllStationDTO;
 import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "line")
 public class Line {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String typeCode;
@@ -35,6 +32,7 @@ public class Line {
 
     private String inoutCode;
 
+    @Builder
     public Line(String typeCode, String localCode, String stationLine, String stationLineCode ,String stationName, String stationCode, String inoutCode) {
         this.typeCode = typeCode;
         this.localCode = localCode;
@@ -58,5 +56,9 @@ public class Line {
                 .build();
     }
 
+
+    public AllStationDTO toDto() {
+        return AllStationDTO.toEn(this);
+    }
 
 }
