@@ -1,10 +1,12 @@
 package server.PAC_project.bus.schedule;
 
+import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import server.PAC_project.bus.model.dto.FinalBusDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,14 +53,19 @@ public class SeoulBusRoute {
     @Autowired
     private RestTemplate restTemplate;
 
-    private BusRepository busRepository;
+    private final BusRepository busRepository;
 
     // 서울특별시 한정 버스 노선 ID값 조회 서비스
     @Scheduled(cron = "0 0 03 25 * ?")
+    @Transactional
     public void getData() throws IOException {
+        // 데이터베이스 초기화 (기존 데이터를 삭제)
+        busRepository.deleteAll();
+        // 파싱된 데이터를 BusEntity 객체로 매핑
         List<BusEntity> busEntities = BusMapto.mapBusToEtity(parser());
+        // 매핑된 BusEntity 객체를 데이터베이스에 저장
         busRepository.saveAll(busEntities);
-        }
+    }
 
     // Exel Parsing
     public Map<String, String> parseBusExcel() throws IOException {
@@ -115,21 +124,34 @@ public class SeoulBusRoute {
 
         // JSON 데이터를 파싱하여 특정 필드를 추출
         JsonNode jsonNode1 = objectMapper.readTree(dataList);
-        jsonNode1 = jsonNode1.get("busRoute");
-        jsonNode1 = jsonNode1.get("row");
+        jsonNode1 = jsonNode1.get("busRoute").get("row");
+
+        // 현재 데이터베이스에서 이미 존재하는 ROUTE_ID 목록을 가져옴
+        List<String> existingRouteIds = busRepository.findAll().stream()
+                .map(BusEntity::getROUTEID)
+                .collect(Collectors.toList());
+
         for (JsonNode jsonNode : jsonNode1) {
-            FinalBusDTO finalbusDTO = objectMapper.treeToValue(jsonNode, FinalBusDTO.class);
+            FinalBusDTO finalBusDTO = objectMapper.treeToValue(jsonNode, FinalBusDTO.class);
+
+            // 기본 값 RS900으로 설정 (RS900 = 기후동행카드 사용 불가능 버스)
+            finalBusDTO.setINOUT_CODE("RS900");
+
             for (String s : stringStringMap.keySet()) {
                 if (jsonNode.get("ROUTE").asText().equals(s)) {
-                    finalbusDTO.setINOUT_CODE(stringStringMap.get(s));
+                    finalBusDTO.setINOUT_CODE(stringStringMap.get(s));
                     break;
                 }
-                finalbusDTO.setINOUT_CODE("200");
             }
-            busEntities.add(finalbusDTO);
+
+            // 중복된 ROUTE_ID인지 확인하고 중복되지 않은 경우에만 추가
+            if (!existingRouteIds.contains(finalBusDTO.getROUTEID())) {
+                busEntities.add(finalBusDTO);
+            }
         }
         System.out.println(jsonNode1);
         objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
+
         // JSON 데이터를 LIST<ResponseBusRouteDTO> 형태로 변환
         return busEntities;
     }
