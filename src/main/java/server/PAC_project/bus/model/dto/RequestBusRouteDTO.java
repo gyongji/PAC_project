@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class RequestBusRouteDTO {
 
-    @JsonProperty("ROUTE")
+    @JsonProperty("RTE_NM")
     private String ROUTE_NAME;
 
-    @JsonProperty("ROUTE_ID")
+    @JsonProperty("RTE_ID")
     private String ROUTE_ID;
 
 }
