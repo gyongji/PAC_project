@@ -1,6 +1,7 @@
 package server.PAC_project.subway.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,14 +25,14 @@ public class SubwayController {
     
     @Operation(summary = "지하철 검색 API", description = "해당 역의 정보를 출력한다.")
     @GetMapping("/searchingStation")
-    public List<SearchSubwayLineDTO> searchSubwayLine(@RequestParam("station") String subwayName) throws IOException {
-        return subwayRealTimeArrivalService.getData(subwayName);
+    public ResponseEntity<List<SearchSubwayLineDTO>> searchSubwayLine(@RequestParam("station") String subwayName) throws IOException {
+        return ResponseEntity.ok(subwayRealTimeArrivalService.getData(subwayName));
     }
 
     @Operation(summary = "지하철 모든 역정보 검색 API", description = "모든 역의 정보를 출력한다.")
     @GetMapping("/searchingAllStation")
-    public List<AllStationDTO> searchAllSubwayStation() throws IOException {
-        return service.searchAllSubwayStation();
+    public ResponseEntity<List<AllStationDTO>> searchAllSubwayStation() throws IOException {
+        return ResponseEntity.ok(service.searchAllSubwayStation());
     }
 
 
