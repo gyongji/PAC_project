@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class ResponseBusRouteDTO {
 
+
     private String ROUTENAME;
     private String INOUT_CODE;
 

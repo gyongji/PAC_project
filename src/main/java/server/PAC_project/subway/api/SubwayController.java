@@ -22,7 +22,7 @@ public class SubwayController {
 
     private final SubwayService service;
     private final SubwayRealTimeArrivalService subwayRealTimeArrivalService;
-    
+
     @Operation(summary = "지하철 검색 API", description = "해당 역의 정보를 출력한다.")
     @GetMapping("/searchingStation")
     public ResponseEntity<List<SearchSubwayLineDTO>> searchSubwayLine(@RequestParam("station") String subwayName) throws IOException {
