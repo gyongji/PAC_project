@@ -56,8 +56,7 @@ public class SeoulBusRoute {
     private final BusRepository busRepository;
 
     // 서울특별시 한정 버스 노선 ID값 조회 서비스
-    //@Scheduled(cron = "0 0 03 25 * ?")
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 03 25 * ?")
     public void getData() throws IOException {
         // 파싱된 데이터를 BusEntity 객체로 매핑
         List<BusEntity> busEntities = BusMapto.mapBusToEtity(parser());
