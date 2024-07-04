@@ -46,7 +46,7 @@ public class SubwayLineD {
 
     //@Scheduled(cron = "${schedule.cron}")
     //매 월 25일 23시(오후 11시)에 자동으로 실행
-    @Scheduled(cron = "0 0 02 25 * ?")
+    @Scheduled(cron = "0 0 02 * * ?")
     public void autoSubwayInformationSave() throws IOException {
         List<ResponseSubwayLineDTO> parser = new ArrayList<>();
         for (SubwayRoute subwayName : SubwayRoute.values()) {

@@ -11,7 +11,6 @@ public enum ResponseSubwayRealTimeArrival {
         STATN_TID("statnTid"),
         STATN_NM("statnNm"),
         TRNSIT_CO("trnsitCo"),
-        ORDKEY("ordkey"),
         BTRAIN_STTUS("btrainSttus"),
         BARVL_DT("barvlDt"),
         BTRAIN_NO("btrainNo"),
