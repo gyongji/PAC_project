@@ -16,8 +16,7 @@ import server.PAC_project.bus.model.dto.FinalBusDTO;
 public class BusEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bus_seq")
-    @SequenceGenerator(name = "bus_seq", sequenceName = "my_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(name = "route_id")
