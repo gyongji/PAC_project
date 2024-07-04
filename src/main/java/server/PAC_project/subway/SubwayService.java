@@ -17,7 +17,6 @@ public class SubwayService {
     private final SubwayRepository subwayRepository;
 
     public List<AllStationDTO> searchAllSubwayStation() throws IOException {
-        List<Line> all = subwayRepository.findAll();
-        return SubwayMapperUtil.mapLineToDto(all);
+        return SubwayMapperUtil.mapLineToDto(subwayRepository.findAll());
     }
 }
