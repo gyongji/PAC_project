@@ -1,33 +1,32 @@
 package server.PAC_project.bus.schedule;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import server.PAC_project.bus.model.dto.FinalBusDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import server.PAC_project.bus.model.dto.FinalBusDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +35,7 @@ public class SeoulBusRoute {
 
     //시작 페이지
     private final int START_NUMBER = 1;
-    
+
     //마지막 페이지
     private final int END_NUMBER = 900;
 
@@ -59,10 +58,16 @@ public class SeoulBusRoute {
     @Scheduled(cron = "0 0 03 25 * ?")
     @Transactional
     public void getData() throws IOException {
+
+
         // 데이터베이스 초기화 (기존 데이터를 삭제)
         busRepository.deleteAll();
         // 파싱된 데이터를 BusEntity 객체로 매핑
         List<BusEntity> busEntities = BusMapto.mapBusToEtity(parser());
+
+        for (BusEntity busEntity : busEntities) {
+            System.out.println("ID :: " + busEntity.getId() + "|| NM :: " + busEntity.getROUTENAME() + "|| InOut :: " + busEntity.getINOUT());
+        }
         // 매핑된 BusEntity 객체를 데이터베이스에 저장
         busRepository.saveAll(busEntities);
     }
@@ -83,7 +88,7 @@ public class SeoulBusRoute {
 
         // 엑셀 시트에서 버스 이름 가져오기
         XSSFSheet sheet = workbook.getSheetAt(1);
-        if(sheet != null) {
+        if (sheet != null) {
             int rowIndex;
 
             int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
@@ -120,7 +125,6 @@ public class SeoulBusRoute {
 
         // URL에 요청 보내서 String.class(문자열) 형식으로 받아옴
         String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
-        System.out.println(dataList);
 
         // JSON 데이터를 파싱하여 특정 필드를 추출
         JsonNode jsonNode1 = objectMapper.readTree(dataList);
@@ -129,28 +133,28 @@ public class SeoulBusRoute {
         // 현재 데이터베이스에서 이미 존재하는 ROUTE_ID 목록을 가져옴
         List<String> existingRouteIds = busRepository.findAll().stream()
                 .map(BusEntity::getROUTEID)
-                .collect(Collectors.toList());
+                .toList();
 
         for (JsonNode jsonNode : jsonNode1) {
             FinalBusDTO finalBusDTO = objectMapper.treeToValue(jsonNode, FinalBusDTO.class);
 
             // 기본 값 RS900으로 설정 (RS900 = 기후동행카드 사용 불가능 버스)
             finalBusDTO.setINOUT_CODE("RS900");
-
             for (String s : stringStringMap.keySet()) {
-                if (jsonNode.get("ROUTE").asText().equals(s)) {
+                if (jsonNode.get("RTE_NM").asText().equals(s)) {
                     finalBusDTO.setINOUT_CODE(stringStringMap.get(s));
                     break;
                 }
             }
-
             // 중복된 ROUTE_ID인지 확인하고 중복되지 않은 경우에만 추가
             if (!existingRouteIds.contains(finalBusDTO.getROUTEID())) {
                 busEntities.add(finalBusDTO);
             }
+
         }
         System.out.println(jsonNode1);
-        objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
+        objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {
+        });
 
         // JSON 데이터를 LIST<ResponseBusRouteDTO> 형태로 변환
         return busEntities;

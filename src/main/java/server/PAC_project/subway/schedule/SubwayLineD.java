@@ -53,8 +53,6 @@ public class SubwayLineD {
             parser.addAll(parser(subwayName.getLineName()));
         }
         subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
-
-
     }
 
     //Xecel Parsing

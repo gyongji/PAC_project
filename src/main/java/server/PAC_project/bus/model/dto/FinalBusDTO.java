@@ -9,10 +9,10 @@ import server.PAC_project.bus.model.entity.BusEntity;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FinalBusDTO {
 
-    @JsonProperty("ROUTE")
+    @JsonProperty("RTE_NM")
     private String ROUTENAME;
 
-    @JsonProperty("ROUTE_ID")
+    @JsonProperty("RTE_ID")
     private String ROUTEID;
 
     private String INOUT_CODE;

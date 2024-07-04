@@ -16,7 +16,7 @@ import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
 public class Line {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String typeCode;
 
