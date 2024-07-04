@@ -29,8 +29,10 @@ dependencies {
 	implementation 'org.jsoup:jsoup:1.17.2'
 
 	// xlsx parser library
-	implementation 'org.apache.poi:poi:5.2.2'
 	implementation 'org.apache.poi:poi-ooxml:5.2.2'
+
+	//swagger
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
 
 	runtimeOnly 'org.postgresql:postgresql'
 	compileOnly 'org.projectlombok:lombok'

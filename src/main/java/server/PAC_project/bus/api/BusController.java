@@ -9,7 +9,6 @@ import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
-
 import java.util.List;
 
 @RestController
@@ -31,4 +30,5 @@ public class BusController {
         List<FinalBusDTO> busDtos = BusMapto.mapBusToFinalBusDTO(busEntities); // BusEntity를 FinalBusDTO로 매핑하는 코드
         return ResponseEntity.ok(busDtos);
     }
+
 }

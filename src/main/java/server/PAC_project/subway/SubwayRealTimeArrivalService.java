@@ -1,4 +1,4 @@
-package server.PAC_project.subway.parser;
+package server.PAC_project.subway;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,15 +20,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> {
+public class SubwayRealTimeArrivalService {
     @Value("${open.api.key.subway-real-time-key}")
     private String subwayRealTimeLocationKey;
 
-    @Value("${open.url.subway-real-time-url}")
-    private String subwayRealTimeUrl;
+    @Value("${open.url.subway-arrival-endpoint}")
+    private String subwayRealTimeArrivalEndPoint;
 
     @Value("${open.url.subway-arrival-url}")
-    private String subwayRealTimeArrivalEndPoint;
+    private String subwayRealTimeUrl;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -37,8 +37,6 @@ public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> 
     private static final int END_PAGE_NUMBER = 10;
 
     private final SubwayRepository subwayRepository;
-
-    @Override
     public List<SearchSubwayLineDTO> getData(String subwayStationName) throws IOException {
         return parser(subwayStationName);
     }
@@ -77,4 +75,3 @@ public class SubwayRealTimeArrival implements SubwayParser<SearchSubwayLineDTO> 
         return subwayRepository.searchSubwayLine(subwayStationName, subwayLineCode);
     }
 }
-

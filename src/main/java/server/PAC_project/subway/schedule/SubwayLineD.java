@@ -1,6 +1,5 @@
 package server.PAC_project.subway.schedule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +20,10 @@ import server.PAC_project.util.SubwayMapperUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -44,19 +46,19 @@ public class SubwayLineD {
 
     //@Scheduled(cron = "${schedule.cron}")
     //매 월 25일 23시(오후 11시)에 자동으로 실행
-    @Scheduled(cron = "0 0 23 25 * ?")
+    @Scheduled(cron = "0 0 02 * * ?")
     public void autoSubwayInformationSave() throws IOException {
+        subwayRepository.deleteAll();
         List<ResponseSubwayLineDTO> parser = new ArrayList<>();
         for (SubwayRoute subwayName : SubwayRoute.values()) {
             parser.addAll(parser(subwayName.getLineName()));
         }
-
         subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
     }
 
     //Xecel Parsing
     public Map<String, String> parserXecel(String subwayName) throws IOException {
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("subway/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("xecel/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
         Map<String, String> subwayInformationList = new HashMap<>();
         if (inputStream == null) {
             throw new IOException("File ERROR 404");

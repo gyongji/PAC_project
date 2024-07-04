@@ -1,22 +1,20 @@
 package server.PAC_project.bus.schedule;
 
-import jakarta.transaction.Transactional;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import server.PAC_project.bus.model.dto.FinalBusDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import server.PAC_project.bus.model.dto.FinalBusDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +33,7 @@ public class SeoulBusRoute {
 
     //시작 페이지
     private final int START_NUMBER = 1;
-    
+
     //마지막 페이지
     private final int END_NUMBER = 900;
 
@@ -64,10 +61,10 @@ public class SeoulBusRoute {
         busRepository.saveAll(busEntities);
     }
 
-    // Exel Parsing
+    // Excel Parsing
     public Map<String, String> parseBusExcel() throws IOException {
         InputStream inputStream
-                = Thread.currentThread().getContextClassLoader().getResourceAsStream("bus/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
+                = Thread.currentThread().getContextClassLoader().getResourceAsStream("xecel/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
         Map<String, String> busRouteInformationList = new HashMap<>();
         if (inputStream == null) {
             throw new IOException("File ERROR 404");
@@ -75,12 +72,9 @@ public class SeoulBusRoute {
 
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
-        // 엑셀 시트 이름 콘솔에 출력
-        System.out.println("Name :: " + workbook.getSheetName(1));
-
         // 엑셀 시트에서 버스 이름 가져오기
         XSSFSheet sheet = workbook.getSheetAt(1);
-        if(sheet != null) {
+        if (sheet != null) {
             int rowIndex;
 
             int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
@@ -113,11 +107,9 @@ public class SeoulBusRoute {
                 + seoulBusRouteEndPoint
                 + START_NUMBER + "/"
                 + END_NUMBER + "/";
-        System.out.println(STATION_COORDINATES_URL);
 
         // URL에 요청 보내서 String.class(문자열) 형식으로 받아옴
         String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
-        System.out.println(dataList);
 
         // JSON 데이터를 파싱하여 특정 필드를 추출
         JsonNode jsonNode1 = objectMapper.readTree(dataList);
@@ -148,6 +140,7 @@ public class SeoulBusRoute {
                 busEntities.add(finalBusDTO);
             }
         }
+
         System.out.println(jsonNode1);
         objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
 

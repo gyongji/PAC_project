@@ -15,9 +15,6 @@ public class BusSearch {
 
     public ResponseBusRouteDTO searchBusRoute(String routeName) {
         BusEntity byINOUT = busRepository.findBusEntityByROUTENAME(routeName);
-
-        System.out.println(byINOUT.getROUTEID());
-        System.out.println(byINOUT.getROUTENAME());
         return BusMapto.mapBusToDTO(byINOUT);
     }
 

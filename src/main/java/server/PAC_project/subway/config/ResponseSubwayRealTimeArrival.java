@@ -1,8 +1,10 @@
 package server.PAC_project.subway.config;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Getter
 public enum ResponseSubwayRealTimeArrival {
         SUBWAY_ID("subwayId"),
         UPDN_LINE("updnLine"),
@@ -11,7 +13,6 @@ public enum ResponseSubwayRealTimeArrival {
         STATN_TID("statnTid"),
         STATN_NM("statnNm"),
         TRNSIT_CO("trnsitCo"),
-        ORDKEY("ordkey"),
         BTRAIN_STTUS("btrainSttus"),
         BARVL_DT("barvlDt"),
         BTRAIN_NO("btrainNo"),

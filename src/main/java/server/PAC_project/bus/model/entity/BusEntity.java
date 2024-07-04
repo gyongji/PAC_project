@@ -1,7 +1,6 @@
 package server.PAC_project.bus.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +9,12 @@ import server.PAC_project.bus.model.dto.FinalBusDTO;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BusEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "route_id")
     private String ROUTEID;
@@ -27,6 +24,13 @@ public class BusEntity {
 
     @Column(name = "inout")
     private String INOUT;
+
+    @Builder
+    public BusEntity(Long id,String ROUTEID, String ROUTENAME, String INOUT) {
+        this.ROUTEID = ROUTEID;
+        this.ROUTENAME = ROUTENAME;
+        this.INOUT = INOUT;
+    }
 
     public static BusEntity toEn(FinalBusDTO finalBusDTO) {
         return BusEntity.builder()
