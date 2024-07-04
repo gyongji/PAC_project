@@ -56,11 +56,9 @@ public class SeoulBusRoute {
     private final BusRepository busRepository;
 
     // 서울특별시 한정 버스 노선 ID값 조회 서비스
-    @Scheduled(cron = "0 0 03 25 * ?")
-    @Transactional
+    //@Scheduled(cron = "0 0 03 25 * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void getData() throws IOException {
-        // 데이터베이스 초기화 (기존 데이터를 삭제)
-        busRepository.deleteAll();
         // 파싱된 데이터를 BusEntity 객체로 매핑
         List<BusEntity> busEntities = BusMapto.mapBusToEtity(parser());
         // 매핑된 BusEntity 객체를 데이터베이스에 저장
@@ -132,13 +130,15 @@ public class SeoulBusRoute {
                 .collect(Collectors.toList());
 
         for (JsonNode jsonNode : jsonNode1) {
-            FinalBusDTO finalBusDTO = objectMapper.treeToValue(jsonNode, FinalBusDTO.class);
+            FinalBusDTO finalBusDTO = new FinalBusDTO();
+            finalBusDTO.setROUTEID(jsonNode.get("RTE_ID").asText()); // ROUTE_ID 설정
+            finalBusDTO.setROUTENAME(jsonNode.get("RTE_NM").asText()); // ROUTE_NAME 설정
 
             // 기본 값 RS900으로 설정 (RS900 = 기후동행카드 사용 불가능 버스)
             finalBusDTO.setINOUT_CODE("RS900");
 
             for (String s : stringStringMap.keySet()) {
-                if (jsonNode.get("ROUTE").asText().equals(s)) {
+                if (jsonNode.get("RTE_NM").asText().equals(s)) {
                     finalBusDTO.setINOUT_CODE(stringStringMap.get(s));
                     break;
                 }
@@ -152,7 +152,7 @@ public class SeoulBusRoute {
         System.out.println(jsonNode1);
         objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
 
-        // JSON 데이터를 LIST<ResponseBusRouteDTO> 형태로 변환
+        // JSON 데이터를 LIST<FinalBusDTO> 형태로 변환
         return busEntities;
     }
 
