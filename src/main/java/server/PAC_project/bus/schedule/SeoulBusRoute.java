@@ -3,10 +3,6 @@ package server.PAC_project.bus.schedule;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
-import jakarta.transaction.Transactional;
-=======
->>>>>>> bus_integrated
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -23,7 +19,6 @@ import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -123,7 +118,7 @@ public class SeoulBusRoute {
         // 현재 데이터베이스에서 이미 존재하는 ROUTE_ID 목록을 가져옴
         List<String> existingRouteIds = busRepository.findAll().stream()
                 .map(BusEntity::getROUTEID)
-                .toList();
+                .collect(Collectors.toList());
 
         for (JsonNode jsonNode : jsonNode1) {
             FinalBusDTO finalBusDTO = new FinalBusDTO();
@@ -132,22 +127,22 @@ public class SeoulBusRoute {
 
             // 기본 값 RS900으로 설정 (RS900 = 기후동행카드 사용 불가능 버스)
             finalBusDTO.setINOUT_CODE("RS900");
+
             for (String s : stringStringMap.keySet()) {
                 if (jsonNode.get("RTE_NM").asText().equals(s)) {
                     finalBusDTO.setINOUT_CODE(stringStringMap.get(s));
                     break;
                 }
             }
+
             // 중복된 ROUTE_ID인지 확인하고 중복되지 않은 경우에만 추가
             if (!existingRouteIds.contains(finalBusDTO.getROUTEID())) {
                 busEntities.add(finalBusDTO);
             }
-
         }
 
         System.out.println(jsonNode1);
-        objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {
-        });
+        objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
 
         // JSON 데이터를 LIST<FinalBusDTO> 형태로 변환
         return busEntities;
