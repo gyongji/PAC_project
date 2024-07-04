@@ -70,7 +70,7 @@ public class SeoulBusRoute {
     // Exel Parsing
     public Map<String, String> parseBusExcel() throws IOException {
         InputStream inputStream
-                = Thread.currentThread().getContextClassLoader().getResourceAsStream("bus/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
+                = Thread.currentThread().getContextClassLoader().getResourceAsStream("xecel/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
         Map<String, String> busRouteInformationList = new HashMap<>();
         if (inputStream == null) {
             throw new IOException("File ERROR 404");

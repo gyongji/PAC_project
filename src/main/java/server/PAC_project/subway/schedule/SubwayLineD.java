@@ -59,7 +59,7 @@ public class SubwayLineD {
 
     //Xecel Parsing
     public Map<String, String> parserXecel(String subwayName) throws IOException {
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("subway/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("xecel/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
         Map<String, String> subwayInformationList = new HashMap<>();
         if (inputStream == null) {
             throw new IOException("File ERROR 404");
