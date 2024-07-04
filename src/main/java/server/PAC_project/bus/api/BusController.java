@@ -8,10 +8,7 @@ import server.PAC_project.bus.model.dto.FinalBusDTO;
 import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
-import server.PAC_project.bus.schedule.SeoulBusRoute;
 import server.PAC_project.bus.util.BusMapto;
-
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,14 +18,6 @@ public class BusController {
 
     private final BusService busService;
     private final BusRepository busRepository;
-
-    private final SeoulBusRoute seoulBusRoute;
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() throws IOException {
-        seoulBusRoute.getData();
-        return ResponseEntity.ok("Test OK");
-    }
 
     @GetMapping("/information")
     public ResponseEntity<ResponseBusRouteDTO> requestBusSearch(@RequestParam("busRouteName") String busRouteName) {
@@ -41,4 +30,5 @@ public class BusController {
         List<FinalBusDTO> busDtos = BusMapto.mapBusToFinalBusDTO(busEntities); // BusEntity를 FinalBusDTO로 매핑하는 코드
         return ResponseEntity.ok(busDtos);
     }
+
 }

@@ -3,10 +3,6 @@ package server.PAC_project.bus.schedule;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
-import jakarta.transaction.Transactional;
-=======
->>>>>>> bus_integrated
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -23,7 +19,6 @@ import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
