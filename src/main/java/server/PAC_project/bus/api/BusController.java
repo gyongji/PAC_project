@@ -1,6 +1,7 @@
 package server.PAC_project.bus.api;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.PAC_project.bus.BusService;
@@ -17,7 +18,6 @@ import java.util.List;
 public class BusController {
 
     private final BusService busService;
-    private final BusRepository busRepository;
 
     @GetMapping("/information")
     public ResponseEntity<ResponseBusRouteDTO> requestBusSearch(@RequestParam("busRouteName") String busRouteName) {
@@ -25,9 +25,8 @@ public class BusController {
     }
 
     @GetMapping("/routes")
-    ResponseEntity<List<FinalBusDTO>> getAllBusRoutes() {
-        List<BusEntity> busEntities = busRepository.findAll(); // BusEntity의 리스트를 가져오는 코드
-        List<FinalBusDTO> busDtos = BusMapto.mapBusToFinalBusDTO(busEntities); // BusEntity를 FinalBusDTO로 매핑하는 코드
+    public ResponseEntity<List<FinalBusDTO>> getAllBusRoutes() {
+        List<FinalBusDTO> busDtos = busService.getBusDtos();
         return ResponseEntity.ok(busDtos);
     }
 
