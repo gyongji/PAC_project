@@ -6,8 +6,16 @@ import lombok.Data;
 import server.PAC_project.subway.config.SubwayRoute;
 import server.PAC_project.subway.model.entity.Line;
 
+import java.util.List;
+
 @Data
 public class AllStationDTO {
+
+    @Schema(description = "지하철 역 명")
+    private String stationName;
+
+    @Schema(description = "승하차 코드")
+    private String inoutCode;
 
     @Schema(description = "타입 코드")
     private String typeCode;
@@ -16,19 +24,16 @@ public class AllStationDTO {
     private String localCode;
 
     @Schema(description = "지하철 라인 명")
-    private String stationLine;
+    private List<String> stationLine;
 
     @Schema(description = "지하철 라인 코드")
-    private String stationLineCode;
+    private List<String> stationLineCode;
 
-    @Schema(description = "지하철 역 명")
-    private String stationName;
-    @Schema(description = "승하차 코드")
-    private String inoutCode;
+
 
 
     @Builder
-    public AllStationDTO(String typeCode, String localCode, String stationLine, String stationLineCode, String stationName, String inoutCode) {
+    public AllStationDTO(String typeCode, String localCode, List<String> stationLine, List<String> stationLineCode, String stationName, String inoutCode) {
         this.typeCode = typeCode;
         this.localCode = localCode;
         this.stationLine = stationLine;
@@ -37,14 +42,4 @@ public class AllStationDTO {
         this.inoutCode = inoutCode;
     }
 
-    public static AllStationDTO toEn(Line line) {
-        return AllStationDTO.builder()
-                .inoutCode(line.getInoutCode())
-                .stationLine(line.getStationLine())
-                .localCode(line.getLocalCode())
-                .stationLineCode(line.getStationLineCode())
-                .stationName(line.getStationName())
-                .typeCode(line.getTypeCode())
-                .build();
-    }
 }

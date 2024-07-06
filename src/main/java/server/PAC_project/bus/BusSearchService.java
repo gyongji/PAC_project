@@ -1,4 +1,4 @@
-package server.PAC_project.bus.service;
+package server.PAC_project.bus;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import server.PAC_project.bus.util.BusMapto;
 
 @Service
 @RequiredArgsConstructor
-public class BusSearch {
+public class BusSearchService {
 
     private final BusRepository busRepository;
 

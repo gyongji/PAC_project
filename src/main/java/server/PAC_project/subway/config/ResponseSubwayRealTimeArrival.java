@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ResponseSubwayRealTimeArrival {
+
         SUBWAY_ID("subwayId"),
         UPDN_LINE("updnLine"),
         TRAIN_LINE_NM("trainLineNm"),

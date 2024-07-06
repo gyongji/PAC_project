@@ -15,11 +15,14 @@ public class SubwayMapperUtil {
                 .collect(Collectors.toList());
     }
 
-    public static Map<String, List<AllStationDTO>> mapLineToDto(List<Line> lines) {
-        List<AllStationDTO> collect = lines.stream()
-                .map(Line::toDto)
-                .toList();
-        return Map.of("dataList", collect);
+    public static AllStationDTO searchingAllSubwayStationDTO(Line line) {
+        return AllStationDTO.builder()
+                .localCode(line.getLocalCode())
+                .stationName(line.getStationName())
+                .typeCode(line.getTypeCode())
+                .inoutCode(line.getInoutCode())
+                .build();
     }
+
 
 }

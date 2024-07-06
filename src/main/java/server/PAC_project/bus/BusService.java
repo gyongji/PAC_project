@@ -6,7 +6,6 @@ import server.PAC_project.bus.model.dto.FinalBusDTO;
 import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
-import server.PAC_project.bus.service.BusSearch;
 import server.PAC_project.bus.util.BusMapto;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BusService {
 
-    private final BusSearch busSearch;
+    private final BusSearchService busSearch;
     private final BusRepository busRepository;
 
     public ResponseBusRouteDTO busRouteSearch(String routeName) {

@@ -39,6 +39,8 @@ public class SubwayRealTimeArrivalService {
     private static final int END_PAGE_NUMBER = 10;
 
     private final SubwayRepository subwayRepository;
+
+
     public Map<String, List<SearchSubwayLineDTO>> getData(String subwayStationName) throws IOException {
         Map<String, List<SearchSubwayLineDTO>> resultDataList = new HashMap<>();
         resultDataList.put("subwayList" , parser(subwayStationName));
@@ -52,10 +54,7 @@ public class SubwayRealTimeArrivalService {
         String STATION_COORDINATES_URL = subwayRealTimeUrl + subwayRealTimeLocationKey +subwayRealTimeArrivalEndPoint+ endPoint;
         System.out.println(STATION_COORDINATES_URL);
 
-        String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
-        JsonNode jsonNode1 = objectMapper.readTree(dataList);
-        JsonNode jsonNode2 = objectMapper.readTree(dataList);
-        jsonNode2 = jsonNode1.get("errorMessage");
+        JsonNode jsonNode1 = objectMapper.readTree(restTemplate.getForObject(STATION_COORDINATES_URL, String.class));
         jsonNode1 = jsonNode1.get("realtimeArrivalList");
 
         return objectMapper.readValue(filteringSubwayRealTime(jsonNode1, subwayStationName).toString(), new TypeReference<>() {
@@ -77,7 +76,6 @@ public class SubwayRealTimeArrivalService {
     }
 
     private String searchSubwayLineInoutCode(String subwayStationName, JsonNode jsonNode) {
-        String subwayLineCode = jsonNode.asText().replace("\"", "");
-        return subwayRepository.searchSubwayLine(subwayStationName, subwayLineCode);
+        return subwayRepository.searchSubwayLine(subwayStationName, jsonNode.asText().replace("\"", ""));
     }
 }

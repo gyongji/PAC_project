@@ -54,8 +54,5 @@ public class Line {
     }
 
 
-    public AllStationDTO toDto() {
-        return AllStationDTO.toEn(this);
-    }
 
 }

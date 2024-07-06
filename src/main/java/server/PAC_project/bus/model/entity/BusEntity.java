@@ -26,7 +26,7 @@ public class BusEntity {
     private String INOUT;
 
     @Builder
-    public BusEntity(Long id,String ROUTEID, String ROUTENAME, String INOUT) {
+    public BusEntity(String ROUTEID, String ROUTENAME, String INOUT) {
         this.ROUTEID = ROUTEID;
         this.ROUTENAME = ROUTENAME;
         this.INOUT = INOUT;

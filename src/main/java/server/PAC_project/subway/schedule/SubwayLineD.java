@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class SubwayLineD {
 
     //@Scheduled(cron = "${schedule.cron}")
     //매 월 25일 23시(오후 11시)에 자동으로 실행
-    @Scheduled(cron = "0 0 02 * * ?")
+    @Scheduled(cron = "0 0 22 06 07 ?")
     public void autoSubwayInformationSave() throws IOException {
         subwayRepository.deleteAll();
         List<ResponseSubwayLineDTO> parser = new ArrayList<>();
@@ -56,8 +57,8 @@ public class SubwayLineD {
         subwayRepository.saveAll(SubwayMapperUtil.mapLineToEntity(parser));
     }
 
-    //Xecel Parsing
-    public Map<String, String> parserXecel(String subwayName) throws IOException {
+    // Excel Parsing
+    private Map<String, String> parserXecel(String subwayName) throws IOException {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("xecel/v0.3_기후동행카드_이용노선도_정리_240513.xlsx");
         Map<String, String> subwayInformationList = new HashMap<>();
         if (inputStream == null) {
@@ -76,7 +77,6 @@ public class SubwayLineD {
                 XSSFRow row = sheet.getRow(rowindex);
                 if (row != null) {
                     XSSFCell cell1 = row.getCell(11);
-//                XSSFCell cell2 = row.getCell(12);
                     XSSFCell cell3 = row.getCell(13);
                     if (cell1 == null || cell3 == null) {
                         break;
@@ -91,8 +91,7 @@ public class SubwayLineD {
         return subwayInformationList;
     }
 
-
-    //플랫폼 실시간 정보 API 요청
+    // 플랫폼 실시간 정보 API 요청
     private List<ResponseSubwayLineDTO> parser(String subwayName) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> map = parserXecel(subwayName);
@@ -101,23 +100,24 @@ public class SubwayLineD {
                 +getSubwayStationNameEndpoint
                 +"/"+ SubwayLineD.startPageNumber +"/"+ SubwayLineD.endPageNumber +"/%20/%20/"+subwayName;
 
-        String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
-        JsonNode jsonNode1 = objectMapper.readTree(dataList);
-        jsonNode1 = jsonNode1.get("SearchSTNBySubwayLineInfo");
-        jsonNode1 = jsonNode1.get("row");
+        System.out.println(STATION_COORDINATES_URL);
+
+        JsonNode jsonNode1 = objectMapper.readTree(restTemplate.getForObject(STATION_COORDINATES_URL, String.class));
+        jsonNode1 = jsonNode1.get("SearchSTNBySubwayLineInfo").get("row");
+
         List<ResponseSubwayLineDTO> result = new ArrayList<>();
         for (JsonNode jsonNode : jsonNode1) {
-            ResponseSubwayLineDTO responseSubwayLineDTO = objectMapper.treeToValue(jsonNode, ResponseSubwayLineDTO.class);
-            for (String s : map.keySet()) {
-                if(jsonNode.get("STATION_NM").asText().equals(s)) {
-                    responseSubwayLineDTO.setInoutCode(map.get(s));
+            if (subwayName.equals(jsonNode.get("LINE_NUM").asText())) {
+                ResponseSubwayLineDTO responseSubwayLineDTO = objectMapper.treeToValue(jsonNode, ResponseSubwayLineDTO.class);
+                for (String s : map.keySet()) {
+                    if(jsonNode.get("STATION_NM").asText().equals(s)) {
+                        responseSubwayLineDTO.setInoutCode(map.get(s));
+                        break;
+                    }
                 }
+                result.add(responseSubwayLineDTO);
             }
-
-            result.add(responseSubwayLineDTO);
         }
-
-        objectMapper.readValue(jsonNode1.toString(), new TypeReference<>() {});
         return result;
     }
 }
