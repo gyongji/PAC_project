@@ -5,6 +5,7 @@ import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
 import server.PAC_project.subway.model.entity.Line;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SubwayMapperUtil {
@@ -14,10 +15,11 @@ public class SubwayMapperUtil {
                 .collect(Collectors.toList());
     }
 
-    public static List<AllStationDTO> mapLineToDto(List<Line> lines) {
-        return lines.stream()
+    public static Map<String, List<AllStationDTO>> mapLineToDto(List<Line> lines) {
+        List<AllStationDTO> collect = lines.stream()
                 .map(Line::toDto)
-                .collect(Collectors.toList());
+                .toList();
+        return Map.of("dataList", collect);
     }
 
 }

@@ -23,22 +23,17 @@ public class AllStationDTO {
 
     @Schema(description = "지하철 역 명")
     private String stationName;
-
-    @Schema(description = "지하철 역 명 코드")
-    private String stationCode;
-
     @Schema(description = "승하차 코드")
     private String inoutCode;
 
 
     @Builder
-    public AllStationDTO(String typeCode, String localCode, String stationLine, String stationLineCode, String stationName, String stationCode, String inoutCode) {
+    public AllStationDTO(String typeCode, String localCode, String stationLine, String stationLineCode, String stationName, String inoutCode) {
         this.typeCode = typeCode;
         this.localCode = localCode;
         this.stationLine = stationLine;
         this.stationLineCode = stationLineCode;
         this.stationName = stationName;
-        this.stationCode = stationCode;
         this.inoutCode = inoutCode;
     }
 
@@ -47,8 +42,7 @@ public class AllStationDTO {
                 .inoutCode(line.getInoutCode())
                 .stationLine(line.getStationLine())
                 .localCode(line.getLocalCode())
-                .stationCode(line.getStationCode())
-                .stationLineCode(line.getStationCode())
+                .stationLineCode(line.getStationLineCode())
                 .stationName(line.getStationName())
                 .typeCode(line.getTypeCode())
                 .build();

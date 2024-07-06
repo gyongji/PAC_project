@@ -10,13 +10,14 @@ import server.PAC_project.util.SubwayMapperUtil;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class SubwayService {
     private final SubwayRepository subwayRepository;
 
-    public List<AllStationDTO> searchAllSubwayStation() throws IOException {
+    public Map<String, List<AllStationDTO>> searchAllSubwayStation() throws IOException {
         return SubwayMapperUtil.mapLineToDto(subwayRepository.findAll());
     }
 }

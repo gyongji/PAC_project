@@ -100,7 +100,7 @@ public class SubwayLineD {
                 + getSubwayStationNameKey
                 +getSubwayStationNameEndpoint
                 +"/"+ SubwayLineD.startPageNumber +"/"+ SubwayLineD.endPageNumber +"/%20/%20/"+subwayName;
-        System.out.println(STATION_COORDINATES_URL);
+
         String dataList = restTemplate.getForObject(STATION_COORDINATES_URL, String.class);
         JsonNode jsonNode1 = objectMapper.readTree(dataList);
         jsonNode1 = jsonNode1.get("SearchSTNBySubwayLineInfo");

@@ -28,18 +28,16 @@ public class Line {
 
     private String stationName;
 
-    private String stationCode;
 
     private String inoutCode;
 
     @Builder
-    public Line(String typeCode, String localCode, String stationLine, String stationLineCode ,String stationName, String stationCode, String inoutCode) {
+    public Line(String typeCode, String localCode, String stationLine, String stationLineCode ,String stationName,  String inoutCode) {
         this.typeCode = typeCode;
         this.localCode = localCode;
         this.stationLine = stationLine;
         this.stationLineCode = stationLineCode;
         this.stationName = stationName;
-        this.stationCode = stationCode;
         this.inoutCode = inoutCode;
     }
 
@@ -49,7 +47,6 @@ public class Line {
                 .stationLine(responseSubwayLineDTO.getStationLine())
                 .stationLineCode(subwayLineCode)
                 .inoutCode(responseSubwayLineDTO.getInoutCode())
-                .stationCode(responseSubwayLineDTO.getStationCode())
                 .stationName(responseSubwayLineDTO.getStationName())
                 .localCode(responseSubwayLineDTO.getLocalCode())
                 .typeCode(responseSubwayLineDTO.getTypeCode())

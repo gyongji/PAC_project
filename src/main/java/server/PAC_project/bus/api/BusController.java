@@ -11,6 +11,7 @@ import server.PAC_project.bus.model.entity.BusEntity;
 import server.PAC_project.bus.repository.BusRepository;
 import server.PAC_project.bus.util.BusMapto;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +26,8 @@ public class BusController {
     }
 
     @GetMapping("/routes")
-    public ResponseEntity<List<FinalBusDTO>> getAllBusRoutes() {
-        List<FinalBusDTO> busDtos = busService.getBusDtos();
-        return ResponseEntity.ok(busDtos);
+    public ResponseEntity<Map<String, List<FinalBusDTO>>> getAllBusRoutes() {
+        return ResponseEntity.ok(busService.getBusDtos());
     }
 
 }

@@ -16,7 +16,9 @@ import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import server.PAC_project.subway.repository.SubwayRepository;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,12 +39,15 @@ public class SubwayRealTimeArrivalService {
     private static final int END_PAGE_NUMBER = 10;
 
     private final SubwayRepository subwayRepository;
-    public List<SearchSubwayLineDTO> getData(String subwayStationName) throws IOException {
-        return parser(subwayStationName);
+    public Map<String, List<SearchSubwayLineDTO>> getData(String subwayStationName) throws IOException {
+        Map<String, List<SearchSubwayLineDTO>> resultDataList = new HashMap<>();
+        resultDataList.put("subwayList" , parser(subwayStationName));
+        return resultDataList;
     }
 
     private List<SearchSubwayLineDTO> parser(String subwayStationName) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+
         String endPoint = START_PAGE_NUMBER + "/" + END_PAGE_NUMBER + "/" + subwayStationName;
         String STATION_COORDINATES_URL = subwayRealTimeUrl + subwayRealTimeLocationKey +subwayRealTimeArrivalEndPoint+ endPoint;
         System.out.println(STATION_COORDINATES_URL);
@@ -53,7 +58,8 @@ public class SubwayRealTimeArrivalService {
         jsonNode2 = jsonNode1.get("errorMessage");
         jsonNode1 = jsonNode1.get("realtimeArrivalList");
 
-        return objectMapper.readValue(filteringSubwayRealTime(jsonNode1,subwayStationName).toString(), new TypeReference<>() {});
+        return objectMapper.readValue(filteringSubwayRealTime(jsonNode1, subwayStationName).toString(), new TypeReference<>() {
+        });
     }
 
     private ArrayNode filteringSubwayRealTime(JsonNode jsonNode,String subwayStationName) {

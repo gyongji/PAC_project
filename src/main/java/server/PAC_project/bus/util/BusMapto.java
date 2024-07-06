@@ -5,7 +5,9 @@ import server.PAC_project.bus.model.dto.ResponseBusRouteDTO;
 import server.PAC_project.bus.model.entity.BusEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BusMapto {
@@ -23,7 +25,7 @@ public class BusMapto {
                 .build();
     }
 
-    public static List<FinalBusDTO> mapBusToFinalBusDTO(List<BusEntity> busEntities) {
+    public static Map<String, List<FinalBusDTO>> mapBusToFinalBusDTO(List<BusEntity> busEntities) {
         List<FinalBusDTO> finalBusDTOs = new ArrayList<>();
         for (BusEntity busEntity : busEntities) {
             FinalBusDTO finalBusDTO = new FinalBusDTO();
@@ -32,7 +34,9 @@ public class BusMapto {
             finalBusDTO.setINOUT_CODE(busEntity.getINOUT());
             finalBusDTOs.add(finalBusDTO);
         }
-        return finalBusDTOs;
+        Map<String, List<FinalBusDTO>> dataList = new HashMap<>();
+        dataList.put("busDataList", finalBusDTOs);
+        return dataList;
     }
 
 }

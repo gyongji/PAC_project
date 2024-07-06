@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +26,13 @@ public class SubwayController {
 
     @Operation(summary = "지하철 검색 API", description = "해당 역의 정보를 출력한다.")
     @GetMapping("/searchingStation")
-    public ResponseEntity<List<SearchSubwayLineDTO>> searchSubwayLine(@RequestParam("station") String subwayName) throws IOException {
+    public ResponseEntity<Map<String, List<SearchSubwayLineDTO>>> searchSubwayLine(@RequestParam("station") String subwayName) throws IOException {
         return ResponseEntity.ok(subwayRealTimeArrivalService.getData(subwayName));
     }
 
     @Operation(summary = "지하철 모든 역정보 검색 API", description = "모든 역의 정보를 출력한다.")
     @GetMapping("/searchingAllStation")
-    public ResponseEntity<List<AllStationDTO>> searchAllSubwayStation() throws IOException {
+    public ResponseEntity<Map<String, List<AllStationDTO>>> searchAllSubwayStation() throws IOException {
         return ResponseEntity.ok(service.searchAllSubwayStation());
     }
 
