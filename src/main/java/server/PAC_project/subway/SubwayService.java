@@ -5,6 +5,7 @@ import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.stereotype.Service;
 import server.PAC_project.subway.config.SubwayRoute;
 import server.PAC_project.subway.model.dto.AllStationDTO;
+import server.PAC_project.subway.model.dto.AllStationListDTO;
 import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import server.PAC_project.subway.model.entity.Line;
 import server.PAC_project.subway.repository.SubwayRepository;
@@ -21,13 +22,25 @@ import java.util.Map;
 public class SubwayService {
     private final SubwayRepository subwayRepository;
 
-    public Map<String, List<AllStationDTO>> searchAllSubwayStation() {
+    public Map<String, List<AllStationDTO>> searchAllMapSubwayStation() {
         Map<String, List<AllStationDTO>> allStationMap = new HashMap<>();
-        allStationMap.put("dataList", getSubwayStation());
+        allStationMap.put("dataList", getMapSubwayStation());
         return allStationMap;
     }
 
-    private List<AllStationDTO> getSubwayStation() {
+    public Map<String, List<AllStationListDTO>> searchAllListSubwayStation() {
+        Map<String, List<AllStationListDTO>> allStationMap = new HashMap<>();
+        allStationMap.put("dataList", getListSubwayStation());
+        return allStationMap;
+    }
+
+    //List Mapping
+    private List<AllStationListDTO> getListSubwayStation() {
+        return SubwayMapperUtil.searchingAllSubwayStationDTO(subwayRepository.findAll());
+    }
+
+    //List<List> Mapping
+    private List<AllStationDTO> getMapSubwayStation() {
         List<AllStationDTO> allStationDTOList = new ArrayList<>();
         for (SubwayRoute value : SubwayRoute.values()) {
             List<String> allDistinctStationName = subwayRepository.findAllDistinctStationName(value.getLineName());

@@ -10,6 +10,7 @@ import server.PAC_project.bus.schedule.SeoulBusRoute;
 import server.PAC_project.subway.SubwayRealTimeArrivalService;
 import server.PAC_project.subway.SubwayService;
 import server.PAC_project.subway.model.dto.AllStationDTO;
+import server.PAC_project.subway.model.dto.AllStationListDTO;
 import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import server.PAC_project.subway.schedule.SubwayLineD;
@@ -31,10 +32,17 @@ public class SubwayController {
         return ResponseEntity.ok(subwayRealTimeArrivalService.getData(subwayName));
     }
 
-    @Operation(summary = "지하철 모든 역정보 검색 API", description = "모든 역의 정보를 출력한다.")
-    @GetMapping("/searchingAllStation")
-    public ResponseEntity<Map<String, List<AllStationDTO>>> searchAllSubwayStation() throws IOException {
-        return ResponseEntity.ok(service.searchAllSubwayStation());
+    @Operation(summary = "지하철 모든 역정보 검색 API", description = "모든 역의 정보를 출력한다. ( 중복값 X )")
+    @GetMapping("/searchingNotDuplicationAllStation")
+    public ResponseEntity<Map<String, List<AllStationDTO>>> searchAllMapSubwayStation() throws IOException {
+        return ResponseEntity.ok(service.searchAllMapSubwayStation());
     }
+
+    @Operation(summary = "지하철 모든 역정보 검색 API", description = "모든 역의 정보를 출력한다. ( 중복값 List )")
+    @GetMapping("/searchingDuplicationAllStation")
+    public ResponseEntity<Map<String, List<AllStationListDTO>>> searchAllListSubwayStation() throws IOException {
+        return ResponseEntity.ok(service.searchAllListSubwayStation());
+    }
+
 
 }

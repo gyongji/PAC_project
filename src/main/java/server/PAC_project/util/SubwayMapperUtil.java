@@ -1,6 +1,7 @@
 package server.PAC_project.util;
 
 import server.PAC_project.subway.model.dto.AllStationDTO;
+import server.PAC_project.subway.model.dto.AllStationListDTO;
 import server.PAC_project.subway.model.dto.ResponseSubwayLineDTO;
 import server.PAC_project.subway.model.entity.Line;
 
@@ -14,6 +15,13 @@ public class SubwayMapperUtil {
                 .map(ResponseSubwayLineDTO::toEntity) // ResponseSubwayLineDTO 에서 Line 객체 생성
                 .collect(Collectors.toList());
     }
+
+    public static List<AllStationListDTO> searchingAllSubwayStationDTO(List<Line> line) {
+        return line.stream()
+                .map(AllStationListDTO::toEnAll)
+                .collect(Collectors.toList());
+    }
+
 
     public static AllStationDTO searchingAllSubwayStationDTO(Line line) {
         return AllStationDTO.builder()
