@@ -1,5 +1,4 @@
 package server.PAC_project.subway;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,9 +15,7 @@ import server.PAC_project.subway.model.dto.SearchSubwayLineDTO;
 import server.PAC_project.subway.repository.SubwayRepository;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,6 @@ public class SubwayRealTimeArrivalService {
 
     private final SubwayRepository subwayRepository;
 
-
     public Map<String, List<SearchSubwayLineDTO>> getData(String subwayStationName) throws IOException {
         Map<String, List<SearchSubwayLineDTO>> resultDataList = new HashMap<>();
         resultDataList.put("subwayList" , parser(subwayStationName));
@@ -51,17 +47,33 @@ public class SubwayRealTimeArrivalService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String endPoint = START_PAGE_NUMBER + "/" + END_PAGE_NUMBER + "/" + subwayStationName;
-        String STATION_COORDINATES_URL = subwayRealTimeUrl + subwayRealTimeLocationKey +subwayRealTimeArrivalEndPoint+ endPoint;
+        String STATION_COORDINATES_URL = subwayRealTimeUrl + subwayRealTimeLocationKey + subwayRealTimeArrivalEndPoint + endPoint;
         System.out.println(STATION_COORDINATES_URL);
 
         JsonNode jsonNode1 = objectMapper.readTree(restTemplate.getForObject(STATION_COORDINATES_URL, String.class));
         jsonNode1 = jsonNode1.get("realtimeArrivalList");
 
-        return objectMapper.readValue(filteringSubwayRealTime(jsonNode1, subwayStationName).toString(), new TypeReference<>() {
-        });
+        List<SearchSubwayLineDTO> subwayLines = objectMapper.readValue(
+                filteringSubwayRealTime(jsonNode1, subwayStationName).toString(),
+                new TypeReference<List<SearchSubwayLineDTO>>() {}
+        );
+
+        List<SearchSubwayLineDTO> sortedLines = subwayLines.stream()
+                .sorted(Comparator.comparingInt(SearchSubwayLineDTO::returnBarvDt)) // Assume barvlDt is in seconds
+                .toList();
+
+        Map<String, SearchSubwayLineDTO> uniqueMap = new LinkedHashMap<>();
+        for (SearchSubwayLineDTO line : sortedLines) {
+            String key = line.getUpdnLine() + ":" + line.getSubwayId();
+            if (!uniqueMap.containsKey(key)) {
+                uniqueMap.put(key, line);
+            }
+        }
+
+        return new ArrayList<>(uniqueMap.values());
     }
 
-    private ArrayNode filteringSubwayRealTime(JsonNode jsonNode,String subwayStationName) {
+    private ArrayNode filteringSubwayRealTime(JsonNode jsonNode, String subwayStationName) {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode arrayNode = objectMapper.createArrayNode();
         for (JsonNode node : jsonNode) {

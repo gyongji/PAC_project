@@ -35,5 +35,8 @@ public class SearchSubwayLineDTO {
     @Schema(description = "승/하차 여부 코드")
     private String inoutCode;
 
+    public int returnBarvDt() {
+        return Integer.parseInt(barvlDt);
+    }
 
 }
